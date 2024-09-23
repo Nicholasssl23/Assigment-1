@@ -1,0 +1,2 @@
+# Assigment 1
+ The purpose of this assignment is to reinforce basic C++ skill, including arrays/vectors, input and output, loops, functions, and programming conventions.  For this assignment you are to write a program that assigns passenger seats in an airplane.  The basic requirement are:  Use functions, vectors and exceptions as needed  Prompt the user for the number of rows and seats per row in the plane  Display the initial seating assignment
