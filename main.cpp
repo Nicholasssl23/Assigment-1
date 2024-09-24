@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <stdexcept>
 
 using namespace std;
 
@@ -26,11 +27,9 @@ void assignSeat(char seats[5][4], int row, char col) {
     seats[row][colIndex] = 'X';  // seat as unavailable
 }
 
-// Function to validate row and column input
 bool validateInput(int row, char col) {
     return (row >= 1 && row <= 5) && (col >= 'A' && col <= 'D');
 }
-
 
 int main() {
     // Initialize a 5x4 grid of available seats
@@ -54,23 +53,32 @@ int main() {
 
         // Ask the user for seat selection
         cout << "Enter seat row (1-5) and column (A-D) (e.g., 2D): ";
-        cin >> row >> col;
 
-        // Adjust row to zero-based index
-        row -= 1;
+        try {
+            cin >> row >> col;
 
-        // Validate input and check seat availability
-        if (row >= 0 && row < 5 && col >= 'A' && col <= 'D') {
+            // Adjust row to zero-based index
+            row -= 1;
+
+            // Validate input and check seat availability
+            if (!validateInput(row + 1, col)) {
+                throw out_of_range("Invalid seat. Row must be between 1-5 and column between A-D.");
+            }
+
             if (isSeatAvailable(seats, row, col)) {
                 assignSeat(seats, row, col);
                 assignedSeats.push_back(to_string(row + 1) + col);
                 availableSeats--;
                 cout << "Seat " << row + 1 << col << " assigned successfully.\n";
             } else {
-                cout << "Sorry, seat " << row + 1 << col << " is already taken.\n";
+                throw runtime_error("Sorry, seat " + to_string(row + 1) + col + " is already taken.");
             }
-        } else {
-            cout << "Invalid seat. Please enter a valid row and column.\n";
+        }
+        catch (const out_of_range& e) {
+            cout << "Error: " << e.what() << " Please enter valid seat information.\n";
+        }
+        catch (const runtime_error& e) {
+            cout << "Error: " << e.what() << endl;
         }
 
         // Ask if the user wants to continue
